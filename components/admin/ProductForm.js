@@ -13,6 +13,7 @@ const BLANK = {
   category: "EDC",
   subcategory: "",
   image: "",
+  images: [],
   shortDescription: "",
   description: "",
   why: "",
@@ -31,16 +32,26 @@ export default function ProductForm({ initialProduct = null }) {
   const isEdit = Boolean(initialProduct);
   const [form, setForm] = useState(() =>
     initialProduct
-      ? { ...BLANK, ...initialProduct, tags: (initialProduct.tags || []).join(", ") }
+      ? { ...BLANK, ...initialProduct, images: initialProduct.images || [], tags: (initialProduct.tags || []).join(", ") }
       : BLANK
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+  const [uploadingExtra, setUploadingExtra] = useState(false);
+  const [extraUploadError, setExtraUploadError] = useState("");
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
+  }
+
+  async function uploadOneFile(file) {
+    const blob = await upload(file.name, file, {
+      access: "public",
+      handleUploadUrl: "/api/admin/upload",
+    });
+    return blob.url;
   }
 
   async function handlePhotoSelected(e) {
@@ -49,17 +60,34 @@ export default function ProductForm({ initialProduct = null }) {
     setUploading(true);
     setUploadError("");
     try {
-      const blob = await upload(file.name, file, {
-        access: "public",
-        handleUploadUrl: "/api/admin/upload",
-      });
-      update("image", blob.url);
+      const url = await uploadOneFile(file);
+      update("image", url);
     } catch (err) {
       setUploadError(err.message || "Upload failed. Try a smaller photo or a different format (JPG/PNG/WEBP).");
     } finally {
       setUploading(false);
       e.target.value = ""; // allow re-selecting the same file if needed
     }
+  }
+
+  async function handleExtraPhotosSelected(e) {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setUploadingExtra(true);
+    setExtraUploadError("");
+    try {
+      const urls = await Promise.all(files.map(uploadOneFile));
+      setForm((f) => ({ ...f, images: [...f.images, ...urls] }));
+    } catch (err) {
+      setExtraUploadError(err.message || "One or more uploads failed. Try smaller photos or a different format.");
+    } finally {
+      setUploadingExtra(false);
+      e.target.value = "";
+    }
+  }
+
+  function removeExtraPhoto(urlToRemove) {
+    setForm((f) => ({ ...f, images: f.images.filter((u) => u !== urlToRemove) }));
   }
 
   async function handleSubmit(e) {
@@ -143,6 +171,42 @@ export default function ProductForm({ initialProduct = null }) {
           onChange={(e) => update("image", e.target.value)}
           placeholder="Or paste an image URL instead"
         />
+      </div>
+
+      <div className="field">
+        <label>Additional photos (optional)</label>
+        <p className="field-hint" style={{ marginTop: 0, marginBottom: 10 }}>
+          The main photo above shows on cards and category pages. Add more here for a gallery on the product's own page — good for different angles, in-use shots, or packaging.
+        </p>
+        {form.images.length > 0 && (
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
+            {form.images.map((url) => (
+              <div key={url} style={{ position: "relative" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={url}
+                  alt=""
+                  style={{ width: 64, height: 80, objectFit: "cover", borderRadius: 4, border: "1px solid var(--border-strong)" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => removeExtraPhoto(url)}
+                  aria-label="Remove this photo"
+                  style={{
+                    position: "absolute", top: -6, right: -6, width: 20, height: 20, borderRadius: "50%",
+                    background: "var(--background)", border: "1px solid var(--border-strong)", color: "var(--text-primary)",
+                    fontSize: 12, lineHeight: 1, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple onChange={handleExtraPhotosSelected} disabled={uploadingExtra} />
+        {uploadingExtra && <p className="field-hint">Uploading…</p>}
+        {extraUploadError && <p className="field-hint" style={{ color: "#e08a8a" }}>{extraUploadError}</p>}
       </div>
 
       <div className="field">
