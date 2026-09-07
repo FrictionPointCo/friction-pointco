@@ -109,4 +109,16 @@ export default function Header({ products = [], activeOverride = null }) {
             {results.map((p) => (
               <Link key={p.id} className="search-result" href={`/product/${p.id}`} onClick={closeAll}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.image || "/images/products/_placeholder.jpg"} alt=""
+                <img src={p.image || "/images/products/_placeholder.jpg"} alt="" />
+                <div>
+                  <div className="name">{p.brand} {p.name}</div>
+                  <div className="meta">{p.category}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
