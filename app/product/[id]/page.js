@@ -3,6 +3,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Badge from "@/components/Badge";
+import ProductGallery from "@/components/ProductGallery";
 import { getAllProducts, getProduct } from "@/lib/db";
 import { retailerLabel } from "@/lib/products";
 
@@ -63,10 +64,10 @@ export default async function ProductPage({ params }) {
             <Link href="/">Home</Link> / <Link href={`/${categoryLower}`}>{product.category}</Link> / <span>{product.name}</span>
           </nav>
           <div className="product-detail">
-            <div className="product-detail__media">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={product.image || "/images/products/_placeholder.jpg"} alt={`${product.brand} ${product.name}`} />
-            </div>
+            <ProductGallery
+              images={[product.image, ...(product.images || [])].filter(Boolean)}
+              alt={`${product.brand} ${product.name}`}
+            />
             <div className="product-detail__info">
               <div className="product-detail__brand">{product.brand}</div>
               <h1 className="product-detail__name">{product.name}</h1>
@@ -81,7 +82,7 @@ export default async function ProductPage({ params }) {
               </div>
               <div className="product-detail__cta">
                 {hasLink ? (
-                  <a
+                  
                     className="btn btn-primary"
                     href={product.affiliateUrl}
                     target="_blank"
