@@ -29,6 +29,7 @@ export async function POST(request) {
       category: body.category,
       subcategory: body.subcategory || "",
       image: body.image || "",
+      images: Array.isArray(body.images) ? body.images.filter(Boolean) : [],
       shortDescription: body.shortDescription || "",
       description: body.description || "",
       why: body.why || "",
