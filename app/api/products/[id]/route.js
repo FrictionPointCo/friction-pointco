@@ -21,6 +21,7 @@ export async function PUT(request, { params }) {
       category: body.category,
       subcategory: body.subcategory || "",
       image: body.image || "",
+      images: Array.isArray(body.images) ? body.images.filter(Boolean) : [],
       shortDescription: body.shortDescription || "",
       description: body.description || "",
       why: body.why || "",
@@ -45,9 +46,13 @@ export async function PUT(request, { params }) {
 
 // DELETE /api/products/[id] — protected by middleware.js.
 export async function DELETE(request, { params }) {
-  const removed = await deleteProduct(params.id);
-  if (!removed) {
-    return NextResponse.json({ error: "Not found." }, { status: 404 });
+  try {
+    const removed = await deleteProduct(params.id);
+    if (!removed) {
+      return NextResponse.json({ error: "Not found." }, { status: 404 });
+    }
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    return NextResponse.json({ error: err.message }, { status: 400 });
   }
-  return NextResponse.json({ ok: true });
 }
