@@ -4,15 +4,19 @@ import { ADMIN_COOKIE_NAME, verifySessionToken } from "./lib/auth";
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // Allow the login page and its API endpoint through untouched.
+  // Allow the login page and its API endpoints through untouched.
   if (
     pathname === "/admin/login" ||
-    pathname === "/api/admin/login"
+    pathname === "/api/admin/login" ||
+    pathname === "/api/admin/logout"
   ) {
     return NextResponse.next();
   }
 
-  const isAdminArea = pathname.startsWith("/admin") || pathname.startsWith("/api/products");
+  const isAdminArea =
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/api/products") ||
+    pathname.startsWith("/api/admin");
   if (!isAdminArea) {
     return NextResponse.next();
   }
@@ -42,5 +46,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/products/:path*"],
+  matcher: ["/admin/:path*", "/api/products/:path*", "/api/admin/:path*"],
 };
