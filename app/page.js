@@ -5,7 +5,7 @@ import Badge from "@/components/Badge";
 import ProductCard from "@/components/ProductCard";
 import EmptyState from "@/components/EmptyState";
 import { getAllProducts } from "@/lib/db";
-import { featured as getFeatured, pullTheTrigger, latest, sortByDateDesc } from "@/lib/products";
+import { featured as getFeatured, pullTheTrigger, latest, sortByDateDesc, categoryThumbnail } from "@/lib/products";
 
 export const revalidate = 0; // always read fresh from the database
 
@@ -14,7 +14,12 @@ export default async function HomePage() {
   const featuredProduct = getFeatured(products);
   const pttPreview = sortByDateDesc(pullTheTrigger(products)).slice(0, 4);
   const latestGear = latest(products, 8);
-  const instaImages = products.slice(0, 6);
+  const categoryPhotos = {
+    EDC: categoryThumbnail(products, "EDC"),
+    KNIVES: categoryThumbnail(products, "KNIVES"),
+    RANGE: categoryThumbnail(products, "RANGE"),
+    GEAR: categoryThumbnail(products, "GEAR"),
+  };
 
   return (
     <>
@@ -72,24 +77,32 @@ export default async function HomePage() {
               </div>
             </div>
             <div className="category-grid">
-              <Link className="category-card" href="/edc" data-analytics="category_click" data-category="EDC">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/products/olight-baton-4.jpg" alt="EDC gear" />
+              <Link className={`category-card ${!categoryPhotos.EDC ? "category-card--plain" : ""}`} href="/edc" data-analytics="category_click" data-category="EDC">
+                {categoryPhotos.EDC && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={categoryPhotos.EDC} alt="EDC gear" />
+                )}
                 <div className="category-card__overlay"><h3>EDC</h3><p>Everyday carry essentials.</p></div>
               </Link>
-              <Link className="category-card" href="/knives" data-analytics="category_click" data-category="KNIVES">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/products/benchmade-bugout.jpg" alt="Knives" />
+              <Link className={`category-card ${!categoryPhotos.KNIVES ? "category-card--plain" : ""}`} href="/knives" data-analytics="category_click" data-category="KNIVES">
+                {categoryPhotos.KNIVES && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={categoryPhotos.KNIVES} alt="Knives" />
+                )}
                 <div className="category-card__overlay"><h3>Knives</h3><p>Folding, fixed blade &amp; cutting tools.</p></div>
               </Link>
-              <Link className="category-card" href="/range" data-analytics="category_click" data-category="RANGE">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/products/streamlight-protac.jpg" alt="Range gear" />
+              <Link className={`category-card ${!categoryPhotos.RANGE ? "category-card--plain" : ""}`} href="/range" data-analytics="category_click" data-category="RANGE">
+                {categoryPhotos.RANGE && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={categoryPhotos.RANGE} alt="Range gear" />
+                )}
                 <div className="category-card__overlay"><h3>Range</h3><p>Accessories &amp; shooting gear.</p></div>
               </Link>
-              <Link className="category-card" href="/gear" data-analytics="category_click" data-category="GEAR">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/products/goruck-gr1.jpg" alt="General gear" />
+              <Link className={`category-card ${!categoryPhotos.GEAR ? "category-card--plain" : ""}`} href="/gear" data-analytics="category_click" data-category="GEAR">
+                {categoryPhotos.GEAR && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={categoryPhotos.GEAR} alt="General gear" />
+                )}
                 <div className="category-card__overlay"><h3>Gear</h3><p>Bags, tools &amp; everything else.</p></div>
               </Link>
             </div>
@@ -132,22 +145,10 @@ export default async function HomePage() {
 
         <section className="section">
           <div className="container">
-            <div className="section-head">
-              <div>
-                <h2>Follow Friction Point</h2>
-                <p>Gear, EDC, knives and the occasional bad decision.</p>
-              </div>
-            </div>
-            <div className="insta-grid">
-              {instaImages.map((p) => (
-                <a key={p.id} href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.image || "/images/products/_placeholder.jpg"} alt={`${p.brand} ${p.name} on Instagram`} loading="lazy" />
-                </a>
-              ))}
-            </div>
-            <div className="insta-cta">
-              <a className="btn btn-outline" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">FOLLOW ON INSTAGRAM</a>
+            <div className="insta-simple">
+              <h2>Follow Friction Point</h2>
+              <p>Gear, EDC, knives and the occasional bad decision.</p>
+              <a className="btn btn-primary" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">FOLLOW ON INSTAGRAM</a>
             </div>
           </div>
         </section>
