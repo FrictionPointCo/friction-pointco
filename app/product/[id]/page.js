@@ -83,7 +83,7 @@ export default async function ProductPage({ params }) {
               <div className="product-detail__cta">
                 {hasLink ? (
                   
-                    <aclassName="btn btn-primary"
+                    <a className="btn btn-primary"
                     href={product.affiliateUrl}
                     target="_blank"
                     rel="nofollow sponsored noopener noreferrer"
