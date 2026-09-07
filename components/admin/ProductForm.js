@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 
 const CATEGORY_OPTIONS = ["EDC", "KNIVES", "RANGE", "GEAR"];
 
@@ -35,9 +36,30 @@ export default function ProductForm({ initialProduct = null }) {
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
+  }
+
+  async function handlePhotoSelected(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError("");
+    try {
+      const blob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/admin/upload",
+      });
+      update("image", blob.url);
+    } catch (err) {
+      setUploadError(err.message || "Upload failed. Try a smaller photo or a different format (JPG/PNG/WEBP).");
+    } finally {
+      setUploading(false);
+      e.target.value = ""; // allow re-selecting the same file if needed
+    }
   }
 
   async function handleSubmit(e) {
@@ -99,8 +121,28 @@ export default function ProductForm({ initialProduct = null }) {
       </div>
 
       <div className="field">
-        <label htmlFor="image">Image URL</label>
-        <input id="image" type="text" value={form.image} onChange={(e) => update("image", e.target.value)} placeholder="/images/products/your-photo.jpg or a full https:// URL" />
+        <label>Product photo</label>
+        <div style={{ display: "flex", gap: 16, alignItems: "flex-start", marginBottom: 10 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={form.image || "/images/products/_placeholder.jpg"}
+            alt=""
+            style={{ width: 80, height: 100, objectFit: "cover", borderRadius: 4, border: "1px solid var(--border-strong)", background: "var(--surface)" }}
+          />
+          <div style={{ flex: 1 }}>
+            <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={handlePhotoSelected} disabled={uploading} />
+            {uploading && <p className="field-hint">Uploading…</p>}
+            {uploadError && <p className="field-hint" style={{ color: "#e08a8a" }}>{uploadError}</p>}
+            <p className="field-hint">JPG, PNG, WEBP, or GIF. Up to 10MB — it'll be used as-is, so a portrait-orientation photo (taller than wide) matches the rest of the site best.</p>
+          </div>
+        </div>
+        <input
+          id="image"
+          type="text"
+          value={form.image}
+          onChange={(e) => update("image", e.target.value)}
+          placeholder="Or paste an image URL instead"
+        />
       </div>
 
       <div className="field">
