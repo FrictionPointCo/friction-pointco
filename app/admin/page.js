@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AdminTopbar from "@/components/admin/AdminTopbar";
 import ProductTable from "@/components/admin/ProductTable";
-import { getAllProducts } from "@/lib/db";
+import { getAllProducts, getCategoryImages } from "@/lib/db";
 import { sortByDateDesc } from "@/lib/products";
 
 export const revalidate = 0;

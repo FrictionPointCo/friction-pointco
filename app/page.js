@@ -4,21 +4,22 @@ import Footer from "@/components/Footer";
 import Badge from "@/components/Badge";
 import ProductCard from "@/components/ProductCard";
 import EmptyState from "@/components/EmptyState";
-import { getAllProducts } from "@/lib/db";
+import { getAllProducts, getCategoryImages } from "@/lib/db";
 import { featured as getFeatured, pullTheTrigger, latest, sortByDateDesc, categoryThumbnail } from "@/lib/products";
 
 export const revalidate = 0; // always read fresh from the database
 
 export default async function HomePage() {
   const products = await getAllProducts();
+  const customCategoryImages = await getCategoryImages();
   const featuredProduct = getFeatured(products);
   const pttPreview = sortByDateDesc(pullTheTrigger(products)).slice(0, 4);
   const latestGear = latest(products, 8);
   const categoryPhotos = {
-    EDC: categoryThumbnail(products, "EDC"),
-    KNIVES: categoryThumbnail(products, "KNIVES"),
-    RANGE: categoryThumbnail(products, "RANGE"),
-    GEAR: categoryThumbnail(products, "GEAR"),
+    EDC: customCategoryImages.EDC || categoryThumbnail(products, "EDC"),
+    KNIVES: customCategoryImages.KNIVES || categoryThumbnail(products, "KNIVES"),
+    RANGE: customCategoryImages.RANGE || categoryThumbnail(products, "RANGE"),
+    GEAR: customCategoryImages.GEAR || categoryThumbnail(products, "GEAR"),
   };
 
   return (
