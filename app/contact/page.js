@@ -20,9 +20,8 @@ export default async function ContactPage() {
           <article className="prose">
             <h1>Contact</h1>
             <p>Questions about a product, a partnership inquiry, or something we got wrong? Reach out.</p>
-            <p><strong>Email:</strong> hello@frictionpoint.example.com</p>
+            <p><strong>Email:</strong> frictionpointco@protonmail.com</p>
             <p><strong>Instagram:</strong> <a href="https://instagram.com/Frictionpointco" target="_blank" rel="noopener noreferrer">@Frictionpointco</a></p>
-            <p>Replace the placeholder email above with your real contact address in <code>app/contact/page.js</code> before launch.</p>
           </article>
         </div>
       </main>
