@@ -30,7 +30,7 @@ export default async function HomePage() {
             <h1>FRICTION POINT<span className="tagline">Trust what you carry.</span></h1>
             <p className="sub">Knives, EDC, range gear and everyday equipment—curated without the noise.</p>
             <div className="hero__ctas">
-              <Link className="btn btn-primary" href="/edc">EXPLORE THE GEAR</Link>
+              <Link className="btn btn-primary" href=#categories">EXPLORE THE GEAR</Link>
               <Link className="btn btn-outline" href="/pull-the-trigger">PULL THE TRIGGER</Link>
             </div>
           </div>
@@ -68,7 +68,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="section">
+        <section className="section" id="categories">
           <div className="container">
             <div className="section-head">
               <div>
