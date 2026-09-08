@@ -23,8 +23,8 @@ export default async function AboutPage() {
             <p>There&apos;s no shortage of &quot;best of&quot; lists online. Most of them are written to fill a template, not to tell you the truth about a product. We do the opposite: every knife, light, tool, and bag on this site is here because we&apos;d carry it ourselves, not because it pays the best commission.</p>
             <h2>What we cover</h2>
             <p>Knives. EDC. Range gear. Everyday equipment. The stuff that ends up in a pocket, a bag, or a range kit and actually gets used, week after week.</p>
-            <h2>Independent curation</h2>
-            <p>We&apos;re not sponsored by the brands we feature. When something earns our <strong>Pull the Trigger</strong> designation, it&apos;s because it held up to real-world use, not because of a partnership.</p>
+            <h2>How we choose</h2>
+            <p>Partnerships and brand relationships help keep the lights on, but they don&apos;t buy a spot on this list. When something earns our <strong>Pull the Trigger</strong> designation, it&apos;s because it held up to real-world use — that call doesn&apos;t change based on who we work with.</p>
             <h2>Real-world usefulness</h2>
             <p>Specs matter less than whether something works the way it&apos;s supposed to, every time. That&apos;s the bar every product on this site has to clear.</p>
           </article>
