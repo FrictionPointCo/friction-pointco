@@ -23,7 +23,10 @@ export default async function AdminDashboard() {
             <h1>Products</h1>
             <p>{products.length} product{products.length === 1 ? "" : "s"} · add, edit, delete, or toggle Featured / Pull the Trigger below.</p>
           </div>
-          <Link className="btn btn-primary" href="/admin/new">ADD PRODUCT</Link>
+          <div style={{ display: "flex", gap: 10 }}>
+            <Link className="btn btn-outline" href="/admin/categories">CATEGORY PHOTOS</Link>
+            <Link className="btn btn-primary" href="/admin/new">ADD PRODUCT</Link>
+          </div>
         </div>
         <ProductTable products={products} />
       </div>
