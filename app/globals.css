@@ -103,7 +103,6 @@ p { margin: 0; }
 }
 .brand img { height: 36px; width: 36px; }
 .brand span {
-  font-family: var(--font-brand);
   font-weight: 700;
   font-size: 20px;
   letter-spacing: 0.03em;
@@ -113,6 +112,17 @@ p { margin: 0; }
   font-style: normal;
   color: var(--accent-primary);
 }
+
+/* Wordmark font — Teko, matched to the logo's condensed angular lettering.
+   Applied via this class (not .brand span directly) so it can also be
+   dropped onto just the "Friction Point" portion of the hero headline
+   without dragging the tagline along with it. */
+.brand-text {
+  font-family: 'Teko', var(--font-brand);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
 .main-nav { display: flex; align-items: center; gap: 32px; }
 .main-nav ul { display: flex; gap: 28px; }
 .main-nav a {
