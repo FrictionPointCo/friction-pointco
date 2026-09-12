@@ -38,7 +38,7 @@ export default function Header({ products = [], activeOverride = null }) {
           <Link className="brand" href="/" aria-label="Friction Point home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/brand/logo-mark.png" alt="Friction Point logo" width="36" height="36" />
-            <span>FRICTION <em>POINT</em></span>
+            <span className="brand-text">FRICTION <em>POINT</em></span>
           </Link>
           <nav className="main-nav" aria-label="Primary">
             <ul>
@@ -68,7 +68,7 @@ export default function Header({ products = [], activeOverride = null }) {
             <Link className="brand" href="/" onClick={closeAll}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/brand/logo-mark.png" alt="Friction Point logo" width="32" height="32" />
-              <span>FRICTION <em>POINT</em></span>
+              <span className="brand-text">FRICTION <em>POINT</em></span>
             </Link>
             <button className="icon-btn" aria-label="Close menu" onClick={closeAll}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
