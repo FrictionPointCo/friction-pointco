@@ -28,7 +28,7 @@ export default async function HomePage() {
       <main id="main">
         <section className="hero">
           <div className="container hero__inner">
-            <h1>FRICTION POINT<span className="tagline">Trust what you carry.</span></h1>
+            <h1><span className="brand-text">FRICTION POINT</span><span className="tagline">Trust what you carry.</span></h1>
             <p className="sub">Knives, EDC, range gear and everyday equipment—curated without the noise.</p>
             <div className="hero__ctas">
               <Link className="btn btn-primary" href="#categories">EXPLORE THE GEAR</Link>
